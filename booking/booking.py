@@ -1,10 +1,11 @@
 import booking.constants as const
 import os
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from booking.booking_filtration import BookingFiltration
+from booking.booking_report import BookingReport
+from prettytable import PrettyTable
 
 
 # each instance inherit from webdriver.Chrome
@@ -85,3 +86,9 @@ class Booking(webdriver.Chrome):
         filter = BookingFiltration(driver=self)
         filtration.apply_star_rating(4, 5)
     
+    def report_results(self):
+        first_hotel_box = self.find_element(By.CSS_SELECTOR, 'div[data-block-id="hotel_list"')
+        report = BookingReport(first_hotel_box)
+        table = PrettyTable(field_names=["Hotel Name", "Hotel Price", "Hotel Rating"])
+        table.add_rows(report.hotel_deals())
+        print(table)
