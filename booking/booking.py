@@ -4,11 +4,12 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
+from booking.booking_filtration import BookingFiltration
 
 
 # each instance inherit from webdriver.Chrome
 class Booking(webdriver.Chrome):
-    def __init__(self, driver_path=r"C:\Chromedriver\chromedriver", tear_down=False):
+    def __init__(self, driver_path=r";C:\Chromedriver\chromedriver", tear_down=False):
         self.driver_path = driver_path
         os.environ['PATH'] += self.driver_path
         # enable chromedriver keep browser context
@@ -80,3 +81,7 @@ class Booking(webdriver.Chrome):
         search_button = self.find_element(By.CSS_SELECTOR, 'button[type="submit"]')
         search_button.click()
    
+    def apply_filters(self):
+        filter = BookingFiltration(driver=self)
+        filtration.apply_star_rating(4, 5)
+    
