@@ -44,5 +44,39 @@ class Booking(webdriver.Chrome):
         search_field.send_keys(place)
         first_result = self.find_element(By.CSS_SELECTOR, 'li[data-i="0"]')
         first_result.click()
+    
 
+    def select_dates(self, check_in_date, check_out_date):
+        check_in_element = self.find_element(By.CSS_SELECTOR,
+                                              f'td[data-date="{check_in_date}"]'    
+                                            )
+        check_in_element.click()
+
+        check_out_element = self.find_element(By.CSS_SELECTOR,
+                                                f'td[data-date="{check_out_date}"]'
+                                             )
+        check_out_element.click()
+   
+    def select_adults(self, num=1):
+        adult_element = self.find_element(By.ID, 'xp__guests__toggle')
+        adult_element.click()
+
+        while True:
+            decrease_adults_element = self.find_element(By.CSS_SELECTOR,
+                                                        'button[aria-label="Decrease number of Adults"]'
+                                                        )
+            decrease_adults_element.click()
+            # if the default adult number is more than one, keep decreasing it until it's one
+            adults_value_element = self.find_element(By.ID, "group_adults")
+            current_adults_value = adults_value_element.get_attribute('value')  # return current adult number
+            if int(current_adults_value) == 1:
+                break
+
+        increase_adults_element = self.find_element(By.CSS_SELECTOR, 'button[aria-label="Increase number of Adults"]')
+        for i in range(num - 1):
+            increase_adults_element.click()
+        
+    def click_search(self):
+        search_button = self.find_element(By.CSS_SELECTOR, 'button[type="submit"]')
+        search_button.click()
    
