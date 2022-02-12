@@ -3,6 +3,8 @@ import os
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+
 
 # each instance inherit from webdriver.Chrome
 class Booking(webdriver.Chrome):
@@ -25,3 +27,22 @@ class Booking(webdriver.Chrome):
             
     def land_first_page(self):
         self.get(const.BASE_URL)
+
+    def change_currency(self, currency=None):
+        currency_element = self.find_element(By.CSS_SELECTOR,
+                                                'button[data-tooltip-text="Choose your currency"]'
+                                                )
+        currency_element.click()
+        selected_currency = self.find_element(By.CSS_SELECTOR,
+                                                f'a[data-modal-header-async-url-param*="selected_currency={currency}"]'
+                                                )
+        selected_currency.click()
+
+    def select_place_to_go(self, place):
+        search_field = self.find_element(By.ID, 'ss')
+        search_field.clear()
+        search_field.send_keys(place)
+        first_result = self.find_element(By.CSS_SELECTOR, 'li[data-i="0"]')
+        first_result.click()
+
+   
